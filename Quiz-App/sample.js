@@ -30,22 +30,16 @@ function buildResultsSection(url, element, title) {
             let resp = xhr.responseText;
             let data = JSON.parse(resp);
             let html = "<h4>" + title + "</h4>";
-            html += "<table class='table table-bordered table-hover'>";
+            html += "<table class='table table-hover table-striped'>";
             html += "<tr class='table-dark'><th>User</th><th>Quiz ID</th><th>Quiz Title</th><th>Started</th><th>Submitted</th><th>Score</th><th>Percent</th></tr>";
             for (let i = 0; i < data.length; i++) {
                 let temp = data[i];
-                html += "<tr>";
-                html += "<td>" + temp.username + "</td>";
-                html += "<td>" + temp.quiz.quizID + "</td>";
-                html += "<td>" + temp.quiz.quizTitle + "</td>";
                 let startTime = temp.quizStartTime.split(" ");
                 let endTime = temp.quizEndTime.split(" ");
-                html += "<td>" + startTime[0] + " at " + startTime[1] + "</td>";
-                html += "<td>" + endTime[0] + " at " + endTime[1] + "</td>";
-                html += "<td>" + temp.scoreNumerator + "/" + temp.scoreDenominator + "</td>";
                 let percent = temp.scoreNumerator / temp.scoreDenominator * 100;
-                html += "<td>" + percent.toFixed(1) + "%</td>";
-                html += "</tr>";
+                
+                html += `<tr><td>${temp.username}</td><td>${temp.quiz.quizID}</td><td>${temp.quiz.quizTitle}</td><td>${startTime[0]} at ${startTime[1]}</td>
+                         <td>${endTime[0]} at ${endTime[1]}</td><td>${temp.scoreNumerator}/${temp.scoreDenominator}</td><td>${percent.toFixed(1)}</td></tr>`;
             }
             html += "</table>";
             element.innerHTML = html;

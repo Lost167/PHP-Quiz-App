@@ -78,9 +78,9 @@
             <h3 id="welcomeUser" class="mb-4">Welcome, Guest!</h3>
             
             <div class="card border-dark mb-3">
-                <div class="card-header">Quiz Search</div>
+                <div class="card-header fs-3">Quiz Search</div>
                 <div class="card-body text-secondary">
-                    <label for="searchInput" class="form-label">Tags</label>
+                    <label for="searchInput" class="form-label">Search by Tags</label>
                     <div class="form-floating">
                         <input type="text" class="form-control" id="searchInput floatingInputGrid" aria-describedby="searchHelp">
                         <label for="floatingInputGrid">Enter a search word or phrase.</label>
