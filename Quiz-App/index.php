@@ -3,6 +3,7 @@
     <head>
         <meta charset="UTF-8">
         <title>Home Page</title>
+        <link rel="icon" type="image/x-icon" href="images/logo/favicon.ico">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
         <script>
             window.onload = function () {
@@ -60,26 +61,35 @@
         </script>
     </head>
     <body>
-        <div class="container">
-            <div class="row p-3 mb-3 bg-light border border-secondary">
-                <div class="col-9 col-xl-10 fs-2">Quiz App</div>
-                <div class="col-3 col-xl-2">
+        <nav class="navbar navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="images/logo/logo.png" alt="" width="65" height="65">
+                </a>
+                <h1>Quiz App</h1>
+                <div id="logIn" class="d-flex">
                     <a id="loginButton" class="btn btn-outline-secondary me-3" href="login-js.php">Log in</a>
                     <a id="createAccountButton"  class="btn btn-secondary" href="#">Sign up</a>
                 </div>
             </div>
-            <h3 class="mb-4">Welcome, Guest!</h3>
-
-            <div class="border border-dark p-3">
-                <h4>Quiz Search</h4>
-
-                <div class="mb-3">
-                    <label for="searchInput" class="form-label">Tags</label>
-                    <input type="text" class="form-control" id="searchInput" aria-describedby="searchHelp">
-                    <div id="searchHelp" class="form-text">Enter a search word or phrase.</div>
+        </nav>
+        <br>
+        <div class="container">
+            <h3 id="welcomeUser" class="mb-4">Welcome, Guest!</h3>
+            
+            <div class="card border-dark mb-3">
+                <div class="card-header fs-3">Quiz Search</div>
+                <div class="card-body text-secondary">
+                    <label for="searchInput" class="form-label">Search by Tags</label>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="searchInput floatingInputGrid" aria-describedby="searchHelp">
+                        <label for="floatingInputGrid">Enter a search word or phrase.</label>
+                    </div>
+                    <button id="searchButton" class="btn btn-primary" style="margin-top:1em;">Search</button>
                 </div>
-                <button id="searchButton" class="btn btn-primary">Search</button>
-
+            </div>
+            
+            <div>
                 <div id="matchingQuizzes"></div>
             </div>
         </div>
