@@ -86,4 +86,27 @@ class UserAccessor {
         return $result;
     }
 
+    public function addNewUser($user) {
+        $success;
+
+        $username = $user->getUsername();
+        $password = $user->getPassword();
+        $permissionLevel = $user->getPermissionLevel();
+
+        try {
+            $this->insertStatement->bindParam(":username", $username);
+            $this->insertStatement->bindParam(":password", $password);
+            $this->insertStatement->bindParam(":permissionLevel", $permissionLevel);
+            $success = $this->insertStatement->execute();
+        }
+        catch (PDOException $e) {
+            $success = false;
+        }
+        finally {
+            if (!is_null($this->insertStatement)) {
+                $this->insertStatement->closeCursor();
+            }
+            return $success;
+        }
+    }
 }

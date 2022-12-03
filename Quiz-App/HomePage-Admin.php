@@ -22,8 +22,8 @@
                 </a>
                 <h1>Quiz App</h1>
                 <div id="logIn" class="d-flex">
-                    <a id="loginButton" class="btn btn-outline-secondary me-3" href="login-js.php">Log in</a>
-                    <a id="createAccountButton"  class="btn btn-secondary" href="#">Sign up</a>
+                    <a id="loginButton" class="btn btn-outline-secondary me-3" href="login-php.php">Log in</a>
+                    <a id="createAccountButton" class="btn btn-outline-secondary me-3" href="signup-php.php">Sign up</a>
                 </div>
             </div>
         </nav>

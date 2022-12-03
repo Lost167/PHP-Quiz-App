@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../db/UserAccessor.php');
+require_once (__DIR__ . '/../entity/User.php');
 
 
 /*
@@ -15,8 +16,8 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === "GET") {
     doGet();
-} else {
-    // not supported yet
+} else if ($method === "POST") {
+    doPost();
 }
 
 function doGet() {
@@ -27,5 +28,24 @@ function doGet() {
         echo $resultsJson;
     } catch (Exception $e) {
         echo "ERROR " . $e->getMessage();
+    }
+}
+
+function doPost() {
+    if (isset($_GET['username'])) { 
+        // The details of the item to insert will be in the request body.
+        $body = file_get_contents('php://input');
+        $contents = json_decode($body, true);
+
+        // create a MenuItem object
+        $UserObject = new User($contents['username'], $contents['password'], 'USER');
+
+        // add the object to DB
+        $mia = new UserAccessor();
+        $success = $mia->addNewUser($UserObject);
+        echo $success;
+    } else {
+        // Bulk inserts not implemented.
+        ChromePhp::log("Sorry, bulk inserts not allowed!");
     }
 }
