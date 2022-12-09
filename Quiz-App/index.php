@@ -152,9 +152,6 @@
                     </div>
                     <button id="searchButton" class="btn btn-primary" style="margin-top:1em;">Search</button>
                 </div>
-            </div>
-
-            <div>
                 <div id="matchingQuizzes"></div>
             </div>
         </div>
