@@ -36,15 +36,22 @@
 
     </head>
     <body>
+        <!-- | Navbar | -->
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.php">
-                    <img src="images/logo/logo.png" alt="" width="65" height="65">
-                </a>
-                <h1>Quiz App</h1>
-                <div id="logIn" class="d-flex">
-                    <a id="loginButton" class="btn btn-outline-secondary me-3" href="login-php.php">Log in</a>
-                    <a id="createAccountButton"  class="btn btn-secondary" href="signup-php.php">Sign up</a>
+                <div class="col-lg-3">
+                    <a class="navbar-brand" href="index.php">
+                        <img src="images/logo/logo.png" alt="" width="65" height="65">
+                    </a>
+                </div>
+                <div class="col-lg-3">
+                    <h1>Quiz App</h1>
+                </div>
+                <div class="col-lg-3">
+                    <div id="logIn" class="d-flex float-end">
+                        <a id="loginButton" class="btn btn-outline-secondary me-3" href="login-php.php">Log in</a>
+                        <a id="createAccountButton"  class="btn btn-outline-secondary me-3" href="signup-php.php">Sign up</a>
+                    </div>
                 </div>
             </div>
         </nav>
