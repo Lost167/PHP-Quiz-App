@@ -64,6 +64,21 @@
                     <a id="createQuestionButton" class="btn btn-outline-secondary me-3" href="create-quiz.php">Create Quiz</a>
                 </div>
             </div>
+            
+            <div class="card border-dark mb-3" id="tagSearch">
+                <div class="card-header fs-2">Search Quiz Results by Question Tags</div>
+                <div class="card-body text-secondary">
+                    <form>
+                    <div class="form-floating">
+                        <select class="form-control floatingSelectGrid" id="tagInput2"></select>
+                        <label for="floatingSelectGrid">Select a Tag</label>
+                    </div>
+                    <button id="getTagResultsButton" class="btn btn-primary" style="margin-top:1em;margin-right:10px;">Get Results</button><button id="getAggregateTagResultsButton" class="btn btn-primary" style="margin-top:1em;">Get Aggregate Results</button>
+                    </form>
+                    
+                    <div class="quizResults container" style="margin-top:1em;"></div>
+                </div>
+            </div>
 
             <div class="card border-dark mb-3" id="userSearch">
                 <div class="card-header fs-2">Search Quiz Results by User</div>
@@ -82,7 +97,7 @@
 
             
             <div class="card border-dark mb-3" id="scoreSearch">
-                <div class="card-header fs-2">Search Quiz Results by Results</div>
+                <div class="card-header fs-2">Search Quiz Results by Score</div>
                 <div class="card-body text-secondary">
                     <form>
                     <div class="form-floating">
@@ -94,6 +109,25 @@
                         <label for="floatingInputGrid">Max Score</label>
                     </div>
                     <button id="getScoreResultsButton" class="btn btn-primary" style="margin-top:1em;margin-right:10px;">Get Results</button><button id="getAggregateScoreResultsButton" class="btn btn-primary" style="margin-top:1em;">Get Aggregate Results</button>
+                    </form>
+                    
+                    <div class="quizResults container" style="margin-top:1em;"></div>
+                </div>
+            </div>
+            
+            <div class="card border-dark mb-3" id="dateSearch">
+                <div class="card-header fs-2">Search Quiz Results by Date</div>
+                <div class="card-body text-secondary">
+                    <form>
+                    <div class="form-floating">
+                        <input type="date" class="form-control floatingInputGrid" id="startDate">
+                        <label for="floatingInputGrid">Start Date</label>
+                    </div>
+                    <div class="form-floating" style="margin-top:1em;">
+                        <input type="date" class="form-control floatingInputGrid" id=endDate">
+                        <label for="floatingInputGrid">End Date</label>
+                    </div>
+                    <button id="getDateResultsButton" class="btn btn-primary" style="margin-top:1em;margin-right:10px;">Get Results</button><button id="getAggregateDateResultsButton" class="btn btn-primary" style="margin-top:1em;">Get Aggregate Results</button>
                     </form>
                     
                     <div class="quizResults container" style="margin-top:1em;"></div>

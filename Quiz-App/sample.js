@@ -1,12 +1,31 @@
 window.onload = function () {
     document.querySelector("#getResultsButton").addEventListener("click", getResultsByUser);
     document.querySelector("#getScoreResultsButton").addEventListener("click", getResultsByScore);
+    document.querySelector("#getTagResultsButton").addEventListener("click", getResultsByTag);
+    document.querySelector("#getAggregateTagResultsButton").addEventListener("click", getAggregateResultsByTag);
     document.querySelector("#getAggregateResultsButton").addEventListener("click", getAggregateResultsByUser);
     document.querySelector("#getAggregateScoreResultsButton").addEventListener("click", getAggregateResultsByScore);
     document.querySelector("#searchButton").addEventListener("click", doSearch);
     getTags();
     loadUsers();
 };
+
+function getResultsByTag(e) {
+    e.preventDefault();
+    let tag = document.querySelector("#tagInput").value;
+    let url = "quizapp/quizResults/search:tag=" + tag;
+    let title = "Quiz Results for Tag " + tag;
+    let element = document.querySelector("#tagSearch .quizResults");
+    buildResultsSection(url, element, title);
+}
+
+function getAggregateResultsByTag(e) {
+    e.preventDefault();
+    let tag = document.querySelector("#tagInput").value;
+    let url = "quizapp/quizResults/search:tag=" + tag;
+    let element = document.querySelector("#tagSearch .quizResults");
+    buildAggregateResultsSection(url, element);
+}
 
 function getResultsByScore(e) {
     e.preventDefault();
@@ -24,6 +43,25 @@ function getAggregateResultsByScore(e) {
     let max = document.querySelector("#scoreMax").value;
     let url = "quizapp/quizResults/search:scoremin=" + min + "&scoremax=" + max;
     let element = document.querySelector("#scoreSearch .quizResults");
+    buildAggregateResultsSection(url, element);
+}
+
+function getResultsByDate(e) {
+    e.preventDefault();
+    let startDate = document.querySelector("#startDate").value;
+    let endDate = document.querySelector("#endDate").value;
+    let url = "quizapp/quizResults/search:startdate=" + startDate + "&enddate=" + endDate;
+    let title = "Quiz Results for Date Range from " + startDate + " to " + endDate;
+    let element = document.querySelector("#dateSearch .quizResults");
+    buildResultsSection(url, element, title);
+}
+
+function getAggregateResultsByDate(e) {
+    e.preventDefault();
+    let startDate = document.querySelector("#startDate").value;
+    let endDate = document.querySelector("#endDate").value;
+    let url = "quizapp/quizResults/search:startdate=" + startDate + "&enddate=" + endDate;
+    let element = document.querySelector("#dateSearch .quizResults");
     buildAggregateResultsSection(url, element);
 }
 
@@ -52,7 +90,7 @@ function buildResultsSection(url, element, title) {
             let data = JSON.parse(resp);
             let html = "<h4>" + title + "</h4>";
             html += "<table class='table table-hover table-striped'>";
-            html += "<tr class='table-dark'><th>User</th><th>Quiz ID</th><th>Quiz Title</th><th>Started</th><th>Submitted</th><th>Score</th><th>Percent</th></tr>";
+            html += "<tr class='table-dark'><th>User</th><th>Quiz ID</th><th>Quiz Title</th><th>Started</th><th>Submitted</th><th>Score</th><th>Percent</th><th>View Results</th></tr>";
             for (let i = 0; i < data.length; i++) {
                 let temp = data[i];
                 let startTime = temp.quizStartTime.split(" ");
@@ -60,7 +98,8 @@ function buildResultsSection(url, element, title) {
                 let percent = temp.scoreNumerator / temp.scoreDenominator * 100;
 
                 html += `<tr><td>${temp.username}</td><td>${temp.quiz.quizID}</td><td>${temp.quiz.quizTitle}</td><td>${startTime[0]} at ${startTime[1]}</td>
-                         <td>${endTime[0]} at ${endTime[1]}</td><td>${temp.scoreNumerator}/${temp.scoreDenominator}</td><td>${percent.toFixed(1)}</td></tr>`;
+                         <td>${endTime[0]} at ${endTime[1]}</td><td>${temp.scoreNumerator}/${temp.scoreDenominator}</td><td>${percent.toFixed(1)}</td>
+                         <td><button id='viewResults' name='${temp.quiz.quizID}'>View Results</button></td></tr>`;
             }
             html += "</table>";
             element.innerHTML = html;
@@ -135,6 +174,8 @@ function getTags() {
             }
             let elem = document.querySelector("#tagInput");
             elem.innerHTML += html;
+            let elem2 = document.querySelector("#tagInput2");
+            elem2.innerHTML += html;
         }
     };
     xhr.open("GET", url, true);
