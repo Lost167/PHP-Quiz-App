@@ -50,12 +50,23 @@
             function findMatchingQuizzes(jsonData, searchTerm) {
                 let quizzes = JSON.parse(jsonData);
                 let matchingQuizzes = [];
+                //let previousTag = "QU-1000";
                 for (let i = 0; i < quizzes.length; i++) {
                     let quiz = quizzes[i];
                     let questions = quiz.questions;
+                    
+//                    console.log(quiz.quizID);
+//                    console.log("The previous Quiz Tag was: "+previousTag);
+//                    if (previousTag === quiz.quizID) {
+//                        break;
+//                    } else {
+//                        previousTag = quiz.quizID;
+//                    }
+
                     for (let j = 0; j < questions.length; j++) {
                         let question = questions[j];
                         let tags = question.tags;
+                        
                         for (let k = 0; k < tags.length; k++) {
                             let tag = tags[k];
                             if (tag.tagName === searchTerm) {
@@ -65,7 +76,24 @@
                         }
                     }
                 }
-                return matchingQuizzes;
+                
+                // Loop through matchingQuizzes
+                // If matching quizID then skip
+                // If new quizID add to new array
+                let previousQuizID = "";
+                let finalMatchingQuizzes = [];
+                for (let i = 0; i < matchingQuizzes.length; i++) {
+                    let quiz = matchingQuizzes[i];
+                    
+                    console.log(quiz.quizID);
+                    console.log(previousQuizID);
+                    if (quiz.quizID !== previousQuizID) {
+                        finalMatchingQuizzes.push(quiz);
+                        previousQuizID = quiz.quizID;
+                    }
+                }
+                
+                return finalMatchingQuizzes;
             }
 
             function buildTable(data) {
