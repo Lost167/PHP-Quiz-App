@@ -18,7 +18,6 @@
                     if (xhr.readyState === 4 && xhr.status === 200) {
                         let resp = xhr.responseText;
                         let data = JSON.parse(resp);
-                        console.log(data);
                         let html = "";
                         for (let i = 0; i < data.length; i++) {
                             html += "<option value='" + data[i].tagName + "'>" + data[i].tagName + "</option>";
@@ -40,7 +39,8 @@
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4 && xhr.status === 200) {
                         let resp = xhr.responseText;
-                        findMatchingQuizzes(resp, searchTerm);
+                        let matchingQuizzes = findMatchingQuizzes(resp, searchTerm);
+                        buildTable(matchingQuizzes);
                     }
                 };
                 xhr.open("GET", url, true);
@@ -58,7 +58,7 @@
                         let tags = question.tags;
                         for (let k = 0; k < tags.length; k++) {
                             let tag = tags[k];
-                            if (tag === searchTerm) {
+                            if (tag.tagName === searchTerm) {
                                 matchingQuizzes.push(quiz);
                                 break;
                             }
