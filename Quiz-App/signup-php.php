@@ -2,7 +2,7 @@
     require_once './db/UserAccessor.php';
     $username = "";
     $password = "";
-    $permissionLevel = "";
+    $permissionLevel = "USER";
     $confirmPassword = "";
     $usernameError = "";
     $confirmPasswordError = "";
@@ -15,15 +15,19 @@
         $accessor = new UserAccessor();
         $account = $accessor->getAccountForUser($username);
         
-        if ($account == true) {
+        if ($account != null) {
             $usernameError = "This Username is Already Used"; 
         } else {
-            
-            if ($password !== $confirmPassword) {
+            if (strlen($password) < 6) {
+                $passwordError = "Password must be 6+ characters";
+            }
+            else if ($password !== $confirmPassword) {
                 $confirmPasswordError = "Your password does not Match!";
-            } else {
+            }
+            else {
                 # Create new User
-                $user = [$username, $password, $permissionLevel];
+                $encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $user = new User($username, $encryptedPassword, $permissionLevel);
                 $newAccount = $accessor->addNewUser($user);
                 session_start();
                 $_SESSION["currentUser"] = json_encode($newAccount);
@@ -78,10 +82,10 @@
                     </div>
                     <div class="mb-3">
                         <label for="confirmPasswordInput" class="form-label">Confirm your Password</label>
-                        <input id="confirmPasswordInput" type="password" class="form-control" name="confirmPassword"  value="" required>
+                        <input id="confirmPasswordInput" type="password" class="form-control" name="confirmPassword"  value="<?php echo $confirmPassword ?>" required>
                         <span id="confirmPasswordError" class="text-danger"><?php echo $confirmPasswordError; ?></span>
                     </div>
-                    <button id="loginButton" class="btn btn-primary" type="submit">Sign Up!</button>
+                    <button id="signUpButton" class="btn btn-primary" type="submit">Sign Up!</button>
                 </form>
             </div>
         </div>

@@ -4,10 +4,13 @@ RewriteEngine on
 
 # CRUD Patterns
 RewriteRule ^quizapp/users$ api/userService.php [NC]
+RewriteRule ^quizapp/accounts$ api/userService.php?showAllAccounts=$1 [NC]
 RewriteRule ^quizapp/quizResults$ api/quizResultService.php [NC]
 #RewriteRule ^quizapp/quizResults/user/(\w+)$ api/quizResultService.php?username=$1 [NC]
 RewriteRule ^quizapp/quizzes$ api/quizService.php [NC]
 RewriteRule ^quizapp/quizzes/(\w+)$ api/quizService.php?quizID=$1 [NC]
+
+RewriteRule ^quizapp/tags$ api/tagService.php [NC]
 
 # Login
 RewriteRule ^login$ logins/verifyUser.php [NC]

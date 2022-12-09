@@ -8,21 +8,41 @@
         <script>
             window.onload = function () {
                 document.querySelector("#searchButton").addEventListener("click", doSearch);
+                getTags();
             };
 
-            function doSearch() {
-                //alert("coming soon");
-                let searchTerm = document.querySelector("#searchInput").value;
-
-                let url = "quizapp/quizzes"
+            function getTags() {
+                let url = "quizapp/tags";
                 let xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function () {
                     if (xhr.readyState === 4 && xhr.status === 200) {
                         let resp = xhr.responseText;
-                        let matchingQuizzes = findMatchingQuizzes(resp, searchTerm);
-                        buildTable(matchingQuizzes);
+                        let data = JSON.parse(resp);
+                        console.log(data);
+                        let html = "";
+                        for (let i = 0; i < data.length; i++) {
+                            html += "<option value='" + data[i].tagName + "'>" + data[i].tagName + "</option>";
+                        }
+                        let elem = document.querySelector("#tagInput");
+                        elem.innerHTML += html;
                     }
-                }
+                };
+                xhr.open("GET", url, true);
+                xhr.send();
+            };
+
+            function doSearch() {
+                //alert("coming soon");
+                let searchTerm = document.querySelector("#tagInput").value;
+
+                let url = "quizapp/quizzes";
+                let xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        let resp = xhr.responseText;
+                        findMatchingQuizzes(resp, searchTerm);
+                    }
+                };
                 xhr.open("GET", url, true);
                 xhr.send();
             }
@@ -38,7 +58,7 @@
                         let tags = question.tags;
                         for (let k = 0; k < tags.length; k++) {
                             let tag = tags[k];
-                            if (tag.includes(searchTerm)) {
+                            if (tag === searchTerm) {
                                 matchingQuizzes.push(quiz);
                                 break;
                             }
@@ -48,14 +68,25 @@
                 return matchingQuizzes;
             }
 
-            function buildTable(quizzes) {
+            function buildTable(data) {
                 let resultsElement = document.querySelector("#matchingQuizzes");
-                let html = "<ul>";
-                for (let i = 0; i < quizzes.length; i++) {
-                    let quiz = quizzes[i];
-                    html += "<li>" + quiz.quizTitle + "</li>";
+                let html = "<h4>Matching Quizzes</h4>";
+                html += "<table class='table table-hover table-striped'>";
+                html += "<tr class='table-dark'><th>Quiz ID</th><th>Quiz Title</th><th>Number of Questions</th><th>Total Points</th></tr>";
+                for (let i = 0; i < data.length; i++) {
+                    let temp = data[i];
+                    let questions = temp.questions.length;
+                    let points = temp.points;
+                    let pointsTotal = 0;
+                    for (let j = 0; j < points.length; j++) {
+                        pointsTotal += points[j];
+                        console.log(points[j]);
+                    }
+
+                    html += `<tr><td>${temp.quizID}</td><td>${temp.quizTitle}</td><td>${questions}</td>
+                         <td>${pointsTotal}</td></tr>`;
                 }
-                html += "</ul>";
+                html += "</table>";
                 resultsElement.innerHTML = html;
             }
         </script>
@@ -83,19 +114,18 @@
         <br>
         <div class="container">
             <h3 id="welcomeUser" class="mb-4">Welcome, Guest!</h3>
-            
+
             <div class="card border-dark mb-3">
                 <div class="card-header fs-3">Quiz Search</div>
                 <div class="card-body text-secondary">
-                    <label for="searchInput" class="form-label">Search by Tags</label>
                     <div class="form-floating">
-                        <input type="text" class="form-control" id="searchInput floatingInputGrid" aria-describedby="searchHelp">
-                        <label for="floatingInputGrid">Enter a search word or phrase.</label>
+                        <select class="form-control floatingSelectGrid" id="tagInput"></select>
+                        <label for="floatingSelectGrid">Select a Tag</label>
                     </div>
                     <button id="searchButton" class="btn btn-primary" style="margin-top:1em;">Search</button>
                 </div>
             </div>
-            
+
             <div>
                 <div id="matchingQuizzes"></div>
             </div>

@@ -3,7 +3,6 @@
 require_once(__DIR__ . '/../db/UserAccessor.php');
 require_once (__DIR__ . '/../entity/User.php');
 
-
 /*
  * Important Note:
  * 
@@ -21,18 +20,29 @@ if ($method === "GET") {
 }
 
 function doGet() {
-    try {
-        $ua = new UserAccessor();
-        $results = $ua->getAllUsers();
-        $resultsJson = json_encode($results, JSON_NUMERIC_CHECK);
-        echo $resultsJson;
-    } catch (Exception $e) {
-        echo "ERROR " . $e->getMessage();
+    if (isset($_GET["showAllAccounts"])) {
+        try {
+            $ua = new UserAccessor();
+            $results = $ua->getAllAccounts();
+            $resultsJson = json_encode($results, JSON_NUMERIC_CHECK);
+            echo $resultsJson;
+        } catch (Exception $e) {
+            echo "ERROR " . $e->getMessage();
+        }
+    } else {
+        try {
+            $ua = new UserAccessor();
+            $results = $ua->getAllUsers();
+            $resultsJson = json_encode($results, JSON_NUMERIC_CHECK);
+            echo $resultsJson;
+        } catch (Exception $e) {
+            echo "ERROR " . $e->getMessage();
+        }
     }
 }
 
 function doPost() {
-    if (isset($_GET['username'])) { 
+    if (isset($_GET['username'])) {
         // The details of the item to insert will be in the request body.
         $body = file_get_contents('php://input');
         $contents = json_decode($body, true);

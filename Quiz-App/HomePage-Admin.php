@@ -31,6 +31,28 @@
         
         <div class="container">
             <h1 class="mb-4">Welcome, <?php echo $username; ?>!</h1>
+            
+            <div class="card border-dark mb-3" id="userSearch">
+                <div class="card-header fs-2">Search for Questions</div>
+                <div class="card-body text-secondary">
+                    <form>
+                    <div class="form-floating">
+                        <select class="form-control floatingSelectGrid" id="userInput"></select>
+                        <label for="floatingSelectGrid">Select a User</label>
+                    </div>
+                    <button id="getResultsButton" class="btn btn-primary" style="margin-top:1em;">Get Results</button>
+                    </form>
+                    
+                    <div class="quizResults container" style="margin-top:1em;"></div>
+                </div>
+            </div>
+            
+            <div class="card border-dark mb-3" id="userSearch">
+                <div class="card-header fs-2">Create a Question</div>
+                <div class="card-body text-secondary">
+                    <a id="createQuestionButton" class="btn btn-outline-secondary me-3" href="create-question.php">Create Question</a>
+                </div>
+            </div>
 
             <div class="card border-dark mb-3" id="userSearch">
                 <div class="card-header fs-2">Search Quiz Results by User</div>
