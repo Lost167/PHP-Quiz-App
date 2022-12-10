@@ -178,7 +178,7 @@
                 <div class="card-header fs-3">Quiz Search</div>
                 <div class="card-body text-secondary">
                     <div class="form-floating">
-                        <select class="form-control floatingSelectGrid" id="tagInput"></select>
+                        <select class="form-control floatingSelectGrid" id="tagInput" onchange="doSearch()"></select>
                         <label for="floatingSelectGrid">Select a Tag</label>
                     </div>
                     <button id="searchButton" class="btn btn-primary" style="margin-top:1em;">Search</button>
