@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/../db/QuizAccessor.php');
+require_once(__DIR__ . '/../db/TagAccessor.php');
 
 /*
  * Important Note:
@@ -20,8 +20,8 @@ if ($method === "GET") {
 
 function doGet() {
     try {
-        $qa = new QuizAccessor();
-        $results = $qa->getAllQuizzes();
+        $ta = new TagAccessor();
+        $results = $ta->getAllTags();
         $resultsJson = json_encode($results, JSON_NUMERIC_CHECK);
         echo $resultsJson;
     } catch (Exception $e) {

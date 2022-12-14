@@ -6,7 +6,25 @@ require_once(__DIR__ . '/../entity/Tag.php');
 class TagAccessor {
 
     public function getAllTags() {
-        
+        $results = [];
+        try {
+            $conn = connect_db();
+            $stmt = $conn->prepare("select * from Tag");
+            $stmt->execute();
+            $dbresults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($dbresults as $r) {
+                $obj = new Tag($r["tagID"], $r["tagName"], $r["tagCategoryName"]);
+                array_push($results, $obj);
+            }
+        } catch (Exception $e) {
+            $results = [];
+        } finally {
+            if (!is_null($stmt)) {
+                $stmt->closeCursor();
+            }
+        }
+        return $results;
     }
 
     public function getTagsForQuestion($questionID) {

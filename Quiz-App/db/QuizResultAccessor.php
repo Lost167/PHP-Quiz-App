@@ -11,6 +11,11 @@ class QuizResultAccessor {
         $queryString = "SELECT *  FROM `quizresult` WHERE scoreNumerator / scoreDenominator * 100 between " . $scoremin . " and " . $scoremax;
         return $this->getResultsByQuery($queryString);
     }
+    
+    public function getResultsByDate($startDate, $endDate) {
+        $queryString = "SELECT *  FROM `quizresult` WHERE " . $startDate . " < cast(quizStartTime as DATE) and " . $endDate . " > cast(quizEndTime as DATE)";
+        return $this->getResultsByQuery($queryString);
+    }
 
     public function getResultsByQuery($query) {
         $results = [];

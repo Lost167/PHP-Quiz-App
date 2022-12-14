@@ -1,31 +1,3 @@
-<?php
-    require_once './db/UserAccessor.php';
-    $username = "";
-    $password = "";
-    $usernameError = "";
-    $passwordError = "";
-
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $username = $_POST["username"];
-        $password = $_POST["password"];
-
-        $accessor = new UserAccessor();
-        $account = $accessor->getAccountForUser($username);
-
-        if ($account == null) {
-            $usernameError = "no such user";
-        } else {
-            $ok = password_verify($password, $account->getPassword());
-            if (!$ok) {
-                $passwordError = "wrong password";
-            } else {
-                session_start();
-                $_SESSION["currentUser"] = json_encode($account);
-                header("location: HomePage-Router.php");
-            }
-        }
-    }
-    ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -57,21 +29,23 @@
         </nav>
         <br>
         <div class="container">
-            <h1 class="mb-4">Login Page</h1>
-            
+            <h1 class="mb-4">Create Quiz: </h1>
+            <!--| Needs to be done |-->
             <div class="border rounded" style="padding: 1em;">
                 <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">  
                     <div class="mb-3">
-                        <label for="usernameInput" class="form-label">User Name</label>
-                        <input id="usernameInput" type="text" class="form-control" name="username" value="<?php echo $username; ?>" required>
-                        <span id="usernameError" class="text-danger floatingSelectGrid"><?php echo $usernameError; ?></span>
+                        <label for="usernameInput" class="form-label">Enter a Username</label>
+                        <input id="usernameInput" type="text" class="form-control" name="username" value="" required>
                     </div>
                     <div class="mb-3">
-                        <label for="passwordInput" class="form-label">Password</label>
-                        <input id="passwordInput" type="password" class="form-control" name="password"  value="<?php echo $password; ?>" required>
-                        <span id="passwordError" class="text-danger"><?php echo $passwordError; ?></span>
+                        <label for="passwordInput" class="form-label">Enter a Password</label>
+                        <input id="passwordInput" type="password" class="form-control" name="password"  value="" required>
                     </div>
-                    <button id="loginButton" class="btn btn-primary" type="submit">Login</button>
+                    <div class="mb-3">
+                        <label for="confirmPasswordInput" class="form-label">Confirm your Password</label>
+                        <input id="confirmPasswordInput" type="password" class="form-control" name="confirmPassword"  value="" required>
+                    </div>
+                    <button id="loginButton" class="btn btn-primary" type="submit">Sign Up!</button>
                 </form>
             </div>
         </div>

@@ -4,10 +4,13 @@ RewriteEngine on
 
 # CRUD Patterns
 RewriteRule ^quizapp/users$ api/userService.php [NC]
+RewriteRule ^quizapp/accounts$ api/userService.php?showAllAccounts=$1 [NC]
 RewriteRule ^quizapp/quizResults$ api/quizResultService.php [NC]
 #RewriteRule ^quizapp/quizResults/user/(\w+)$ api/quizResultService.php?username=$1 [NC]
 RewriteRule ^quizapp/quizzes$ api/quizService.php [NC]
 RewriteRule ^quizapp/quizzes/(\w+)$ api/quizService.php?quizID=$1 [NC]
+
+RewriteRule ^quizapp/tags$ api/tagService.php [NC]
 
 # Login
 RewriteRule ^login$ logins/verifyUser.php [NC]
@@ -19,10 +22,10 @@ RewriteRule ^login$ logins/verifyUser.php [NC]
 #RewriteRule ^quizapp/questions/searchAll:tags=([A-Za-z0-9 |]+)$ searches/searchQuestionsByTags.php?tags=$1&all=true [NC]
 #RewriteRule ^quizapp/quizzes/search:tags=([A-Za-z0-9 |]+)$ searches/searchQuizzesByTags.php?tags=$1 [NC]
 #RewriteRule ^quizapp/quizzes/searchAll:tags=([A-Za-z0-9 |]+)$ searches/searchQuizzesByTags.php?tags=$1&all=true [NC]
-#RewriteRule ^quizapp/quizResults/search:tags=([A-Za-z0-9 |]+)$ searches/searchQuizResultsByTags.php?tags=$1 [NC]
+RewriteRule ^quizapp/quizResults/search:tag=([A-Za-z0-9]+)$ searches/searchQuizResultsByTags.php?tag=$1 [NC]
 #RewriteRule ^quizapp/quizResults/searchAll:tags=([A-Za-z0-9 |]+)$ searches/searchQuizResultsByTags.php?tags=$1&all=true [NC]
 
 # Other searches
 RewriteRule ^quizapp/quizResults/search:scoremin=(\d+)&scoremax=(\d+)$ searches/searchByScore.php?scoremin=$1&scoremax=$2 [NC]
-#RewriteRule ^quizapp/quizResults/search:datestart=(\w+)&dateend=(\w+)$ searches/searchByDate.php?datestart=$1&dateend=$2 [NC]
+RewriteRule ^quizapp/quizResults/search:startdate=(\w+)&enddate=(\w+)$ searches/searchByDate.php?datestart=$1&dateend=$2 [NC]
 RewriteRule ^quizapp/quizResults/search:user=(\w+)$ searches/searchByUser.php?username=$1 [NC]
