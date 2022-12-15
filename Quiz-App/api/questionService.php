@@ -88,3 +88,23 @@ function doDelete() {
         ChromePhp::log("Sorry, bulk deletes not allowed!");
     }
 }
+
+// aka UPDATE
+function doPut() {
+    if (isset($_GET['questionID'])) { 
+        // The details of the item to update will be in the request body.
+        $body = file_get_contents('php://input');
+        $contents = json_decode($body, true);
+
+        // create a MenuItem object
+        $questionObj = new Question($contents['questionID'], $contents['questionText'], $contents['choices'], $contents['answer'], $contents['tags']);
+
+        // update the object in the  DB
+        $mia = new QuestionAccessor();
+        $success = $mia->updateItem($questionObj);
+        echo $success;
+    } else {
+        // Bulk updates not implemented.
+        ChromePhp::log("Sorry, bulk updates not allowed!");
+    }
+}
