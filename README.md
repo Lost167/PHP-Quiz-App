@@ -13,5 +13,3 @@ Lost - [GitHub](https://github.com/Lost167) - [LinkedIn](https://www.linkedin.co
 Tanner - [Github](https://github.com/tgamblin2) - [LinkedIn](https://www.linkedin.com/in/tanner-gamblin-719119259)
 
 Bharati - [GitHub](https://github.com/Bharatiben)
-
-Bradley - [GitHub](https://github.com/BradPay)
