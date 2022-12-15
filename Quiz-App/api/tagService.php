@@ -1,6 +1,7 @@
 <?php
 
 require_once(__DIR__ . '/../db/TagAccessor.php');
+require_once (__DIR__. '/../utils/ChromePhp.php');
 
 /*
  * Important Note:
@@ -11,20 +12,62 @@ require_once(__DIR__ . '/../db/TagAccessor.php');
  */
 
 $method = $_SERVER['REQUEST_METHOD'];
-
 if ($method === "GET") {
     doGet();
-} else {
-    // not supported yet
+}
+else if ($method === "POST") {
+    doPost();
+}
+else if ($method === "DELETE") {
+    doDelete();
+}
+else if ($method === "PUT") {
+    doPut();
 }
 
+
 function doGet() {
-    try {
-        $ta = new TagAccessor();
-        $results = $ta->getAllTags();
-        $resultsJson = json_encode($results, JSON_NUMERIC_CHECK);
-        echo $resultsJson;
-    } catch (Exception $e) {
-        echo "ERROR " . $e->getMessage();
+    // url = "menuService/categories" ==> get all categories
+    if (!isset($_GET['tagID'])) {
+        try {
+            $mica = new TagAccessor();
+            
+            $results = $mica->getAllTags();
+            $results = json_encode($results, JSON_NUMERIC_CHECK);
+            ChromePhp::log($results);
+            echo $results;
+        }
+        catch (Exception $e) {
+            echo "ERROR" . $e->getMessage();
+        }
+    }
+    // url = "menuService/categories/XXX" where XXX is an tagID  ==> get just the category with the matching ID
+    else {
+        ChromePhp::log($_GET['tagID']);
     }
 }
+
+
+function doDelete() {
+}
+
+// aka CREATE
+function doPost() {
+}
+
+// aka UPDATE
+function doPut() {
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
