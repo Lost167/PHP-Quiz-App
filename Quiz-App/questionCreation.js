@@ -133,7 +133,7 @@ function processForm() {
             console.log(xmlhttp.responseText);
             if (resp.search("ERROR") >= 0 || resp !== 1) {
                 console.log("Problem");
-                alert("could not complete request");
+                //alert("could not complete request");
                 //console.log(resp);
             } else {
                 alert("Question " + (addOrUpdate === "add" ? "added." : "updated."));
