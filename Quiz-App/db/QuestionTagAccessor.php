@@ -15,7 +15,7 @@ class QuestionTagAccessor {
     //private $insertStatementString = "insert INTO Question values (:questionID, :questionText, :choices, :answer, :tags)";
     private $insertStatementString = "insert INTO QuestionTag values (:questionID, :tagID)";
    
-    private $updateStatementString = "update MenuItem set itemCategoryID = :itemCategoryID, description = :description, price = :price, vegetarian = :vegetarian where itemID = :itemID";
+    private $updateStatementString = "update QuestionTag set tagID = :tagID where questionID = :questionID";
     private $conn = NULL;
     private $getByIDStatement = NULL;
     private $deleteStatement = NULL;
@@ -238,6 +238,31 @@ class QuestionTagAccessor {
             }
         }
         return $results;
+    }
+    
+    //by bharati
+    //by bharati
+    public function updateQuestionTag($item) {
+        $success;
+//        $conn = connect_db();
+        $questionID = $item->getQuestionID();
+        $tagID = $item->getTagID();
+        
+        try {
+            $this->updateStatement->bindParam(":questionID", $questionID);
+            $this->updateStatement->bindParam(":tagID", $tagID); 
+          
+            $success = $this->updateStatement->execute();
+        }
+        catch (PDOException $e) {
+            $success = false;
+        }
+        finally {
+            if (!is_null($this->updateStatement)) {
+                $this->updateStatement->closeCursor();
+            }
+            return $success;
+        }
     }
     
 }
