@@ -89,23 +89,23 @@ class UserAccessor {
     public function addNewUser($user) {
         $success;
 
-        $username = $user.getUsername();
-        $password = $user.getPassword();
-        $permissionLevel = $user.getPermissionLevel();
+        $username = $user->getUsername();
+        $password = $user->getPassword();
+        $permissionLevel = $user->getPermissionLevel();
 
         try {
             $conn = connect_db();
-            $stmt = $conn->prepare("insert into QuizAppUser values (username = :username, password = :password, permissionLevel = :permissionLevel)");
+            $stmt = $conn->prepare("insert into QuizAppUser VALUES (:username, :password, :permissionLevel)");
             $stmt->bindParam(":username", $username);
             $stmt->bindParam(":password", $password);
             $stmt->bindParam(":permissionLevel", $permissionLevel);
             $success= $stmt->execute();
         }
         catch (PDOException $e) {
-            $success = null;
+            $success = false;
         }
         finally {
-            if (!is_null($this->insertStatement)) {
+            if (!is_null($stmt)) {
                 $stmt->closeCursor();
             }
             return $success;

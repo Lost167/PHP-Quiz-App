@@ -1,4 +1,5 @@
 <?php
+include "./utils/ChromePhp.php";
 
 session_start();
 $userInfo = json_decode($_SESSION["currentUser"], true);
