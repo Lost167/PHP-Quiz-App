@@ -5,6 +5,7 @@
         <title>Create Question</title>
         <link rel="icon" type="image/x-icon" href="images/logo/favicon.ico">
         <script src="questionCreation.js"></script>
+        <link rel="stylesheet" href="dbDemoStyles.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
     </head>
@@ -32,38 +33,64 @@
         <!-- | Create Question | -->
         <br>
         <div class="container">
-            <div class="float-start" style="width: 30%;">
-            <h2>Create a Question:</h2>
-            <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">  
-                <div class="mb-3">
-                    <label for="questionIDInput" class="form-label">Question ID:</label>
-                    <input id="questionIDInput" type="text" class="form-control" name="questionID" pattern="QU-\d{3}" value="QU-" required>
-                </div>
-                <div class="mb-3">
-                    <label for="questionTagInput" class="form-label">Question Tag:</label>
-                    <input id="questionTagInput" type="password" class="form-control" name="questionTag"  value="" required>
-                </div>
-                <div class="mb-3">
-                    <label for="questionTitleInput" class="form-label">Question Title:</label>
-                    <input id="questionTitleInput" type="password" class="form-control" name="questionTitle"  value="" required>
-                </div>
-                <div class="mb-3">
-                    <label for="questionChoiceInput" class="form-label">Number of Choices:</label>
-                    <input id="questionChoiceInput" type="number" class="form-control" name="numberOfChoices" onchange="numberOfQuestions()" value="4" min="3" max="8" required>
-                </div>
-                <div class="mb-3">
-                    <label for="questionAnswerInput" class="form-label">Answer:</label>
-                    <input id="questionAnswerInput" type="password" class="form-control" name="questionAnswer"  value="" required>
-                </div>
+            <!--<div class="float-start" style="width: 30%;">-->
+            <div>
+                <h2>Create a Question:</h2>
+                <button id="GetButton">View All Question</button>
+                <button id="DeleteButton" disabled>Delete</button>
+                <button id="UpdateButton" disabled>Update</button>
+                
+                <form method="POST" id="frm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">  
+                    <div class="mb-3">
+                        <label for="questionIDInput" class="form-label">Question ID:</label>
+                        <input id="questionID" type="text" class="form-control" name="questionID" pattern="QN-\d{4}" value="QN-" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="questionTagInput" class="form-label">Question Tag:</label>
+                        <select id="categorySelect" class="form-control">
+
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="questionTitleInput" class="form-label">Question Text:</label>
+                        <input id="questionText" type="text" class="form-control" name="questionText"  value="" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="questionChoiceInput" class="form-label">Number of Choices:</label>
+                        <select id="choices" name="choices" class="form-control">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <div class="mb-3" id="inputChoices">
+                        
+                    </div>
+                    <div class="mb-3">
+                        <label for="questionAnswerInput" class="form-label">Answer:</label>
+                        <input id="answer" type="text" class="form-control" name="answer"  value="" required><label id="error"></label>
+                    </div>
+                    <!--            </div>
+                                <div class="float-end" style="width: 60%;">-->
+                    <!--                <div class="form-group questionText">
+                                        Number of Choices here!
+                                    </div>-->
+                    <button id="DoneButton" class="btn btn-outline-primary" type="submit">Submit</button>
+                    <button id="CancelButton" class="btn btn-outline-danger" >Cancel</button>
+                </form>
             </div>
-            <div class="float-end" style="width: 60%;">
-                <div class="form-group questionText">
-                    Number of Choices here!
-                </div>
-                <button id="submitButton" class="btn btn-outline-primary" type="submit">Submit</button>
-                <button id="cancelButton" class="btn btn-outline-danger" type="submit">Cancel</button>
-            </div>
-            </form>
         </div>
-    </body>
+    
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Question Text</th>
+                <th>Choices</th>
+                <th>Answer</th>
+                <th>Tag</th>
+            </tr>
+        </table>
+</body>
 </html>
