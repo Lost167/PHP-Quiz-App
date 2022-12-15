@@ -57,7 +57,7 @@ function deleteItem() {
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
             let resp = xmlhttp.responseText;
-            if (resp.search("ERROR") >= 0 || resp != 1) {
+            if (resp.search("ERROR") >= 0 || resp !==1) {
                 alert("could not complete request");
                 console.log(resp);
             } else {
