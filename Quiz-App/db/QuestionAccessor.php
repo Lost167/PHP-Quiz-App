@@ -15,7 +15,7 @@ class QuestionAccessor {
     //private $insertStatementString = "insert INTO Question values (:questionID, :questionText, :choices, :answer, :tags)";
     private $insertStatementString = "insert INTO Question values (:questionID, :questionText, :choices, :answer)";
    
-    private $updateStatementString = "update MenuItem set itemCategoryID = :itemCategoryID, description = :description, price = :price, vegetarian = :vegetarian where itemID = :itemID";
+    private $updateStatementString = "update Question set questionText = :questionText, choices = :choices, answer = :answer where questionID = :questionID";
     private $conn = NULL;
     private $getByIDStatement = NULL;
     private $deleteStatement = NULL;
@@ -217,5 +217,58 @@ class QuestionAccessor {
             return $success;
         }
     }
+    
+    //by bharati
+    //by bharati
+    public function updateItem($item) {
+        $success;
+
+        $questionID = $item->getQuestionID();
+        $questionText = $item->getQuestionText();
+        $choices1 = $item->getChoices();
+        
+        print_r ($choices1); 
+        echo "hi .$questionText.....";
+        $a = count($choices1);
+        echo "$a";
+        $choices = implode ("|",$choices1); 
+        echo join ("|",$choices1). " <br> ";  
+        
+        $answer = $item->getAnswer();
+        //need to convert answer string to number 
+        for ($i = 0; $i < count($choices1); $i++) {
+            if($choices1[$i] == $answer){
+                $ans = $i;
+            }
+        }
+        
+        $qta = new QuestionTagAccessor();
+        
+        $tagID = $item->getTags();
+        echo $tagID. " <br> ";
+        
+        try {
+            $this->updateStatement->bindParam(":questionID", $questionID);
+            $this->updateStatement->bindParam(":questionText", $questionText);
+            $this->updateStatement->bindParam(":choices", $choices);
+            $this->updateStatement->bindParam(":answer", $ans);
+            //$this->updateStatement->bindParam(":tags", $tags);
+            
+            $success = $this->updateStatement->execute();
+            
+            $questionTag = new QuestionTag($questionID, $tagID);
+            $qta->updateQuestionTag($questionTag);
+        }
+        catch (PDOException $e) {
+            $success = false;
+        }
+        finally {
+            if (!is_null($this->updateStatement)) {
+                $this->updateStatement->closeCursor();
+            }
+            return $success;
+        }
+    }
+
 
 }
