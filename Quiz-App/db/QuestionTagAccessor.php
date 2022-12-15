@@ -1,7 +1,6 @@
 <?php
 
-//require_once 'dbconnect.php';
-require_once 'ConnectionManager.php';
+require_once 'dbconnect.php';
 require_once(__DIR__ . '/../entity/Question.php');
 require_once('TagAccessor.php');
 require_once('QuestionAccessor.php');
@@ -9,10 +8,8 @@ require_once(__DIR__ . '/../entity/Tag.php');
 require_once(__DIR__ . '/../entity/QuestionTag.php');
 
 class QuestionTagAccessor {
-//Question($contents['questionID'], $contents['questionText'], $contents['choices'], $contents['answer'], $contents['tags']);
     private $getByIDStatementString = "select * from Question where itemID = :itemID";
     private $deleteStatementString = "delete from MenuItem where itemID = :itemID";
-    //private $insertStatementString = "insert INTO Question values (:questionID, :questionText, :choices, :answer, :tags)";
     private $insertStatementString = "insert INTO QuestionTag values (:questionID, :tagID)";
    
     private $updateStatementString = "update QuestionTag set tagID = :tagID where questionID = :questionID";
@@ -25,9 +22,7 @@ class QuestionTagAccessor {
     // Constructor will throw exception if there is a problem with ConnectionManager,
     // or with the prepared statements.
     public function __construct() {
-        $cm = new ConnectionManager();
-
-        $this->conn = $cm->connect_db();
+        $this->conn = connect_db();
         if (is_null($this->conn)) {
             throw new Exception("no connection");
         }
@@ -45,11 +40,7 @@ class QuestionTagAccessor {
         if (is_null($this->insertStatement)) {
             throw new Exception("bad statement: '" . $this->getAllStatementString . "'");
         } 
-//        else {
-//            $this->insertStatement22 = $this->conn->prepare($this->sql2);
-//            echo 'data submitted successfully';
-//        }
-
+      
         $this->updateStatement = $this->conn->prepare($this->updateStatementString);
         if (is_null($this->updateStatement)) {
             throw new Exception("bad statement: '" . $this->updateStatementString . "'");
@@ -90,10 +81,9 @@ class QuestionTagAccessor {
     //by bharati
     public function getAllQuestions() {
         $results = [];
-        $cm = new ConnectionManager();
-
+        $conn = connect_db();
+        
         try {
-            $conn = $cm->connect_db();
             $stmt = $conn->prepare("select * from question");
             $stmt->execute();
             $dbresults = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -128,18 +118,11 @@ class QuestionTagAccessor {
      */
     public function insertItem($item) {
         $success;
-//        $conn = connect_db();
         $questionID = $item->getQuestionID();
         $questionText = $item->getQuestionText();
          
         $choices1 = $item->getChoices();
-        
-        print_r ($choices1); 
-        echo "hi .$questionText.....";
-        $a = count($choices1);
-        echo "$a";
         $choices = implode ("|",$choices1); 
-        echo join ("|",$choices1). " <br> ";  
         
         $answer = $item->getAnswer();
         //need to convert answer string to number 
@@ -152,9 +135,6 @@ class QuestionTagAccessor {
         $qta = new QuestionTagAccessor();
         
         $tags = $item->getTags();
-        echo $tagID. " <br> ";
-        
-        //$tags = $ta->getTagsForQuestion($r["questionID"]);
         
         try {
             $this->insertStatement->bindParam(":questionID", $questionID);
@@ -162,14 +142,14 @@ class QuestionTagAccessor {
             $this->insertStatement->bindParam(":choices", $choices);
             $this->insertStatement->bindParam(":answer", $ans);
             $this->insertStatement->bindParam(":tags", $tags);
-            //$this->insertStatement22->bindParam(":tagID", $tagID);
+            
             $success = $this->insertStatement->execute();
             
             foreach ($tags as $tag) {
                 $questionTag = new QuestionTag($questionID, $tag->getTagID());
                 $qta->insertQuestionTag($questionTag);
             }
-           // $success = $this->insertStatement22->execute();
+           
         }
         catch (PDOException $e) {
             $success = false;
@@ -182,10 +162,9 @@ class QuestionTagAccessor {
         }
     }
     
-    //
+    //bby Bharati
     public function insertQuestionTag($item) {
         $success;
-//        $conn = connect_db();
         $questionID = $item->getQuestionID();
         $tagID = $item->getTagID();
         
@@ -220,12 +199,9 @@ class QuestionTagAccessor {
             $dbresults = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             //$ta = new TagAccessor();
-
             foreach ($dbresults as $r) {
-                
-//                $tagID = intval($r["tagID"]);
+                //$tagID = intval($r["tagID"]);
                 $obj = new QuestionTag($r["questionID"], $r["tagID"]);
-
                 //$obj = new Tag($r["tagID"], $r["tagName"], $r["tagCategoryName"]);
                 
                 array_push($results, $obj);
@@ -241,10 +217,8 @@ class QuestionTagAccessor {
     }
     
     //by bharati
-    //by bharati
     public function updateQuestionTag($item) {
         $success;
-//        $conn = connect_db();
         $questionID = $item->getQuestionID();
         $tagID = $item->getTagID();
         
