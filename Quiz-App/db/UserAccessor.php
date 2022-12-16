@@ -6,6 +6,17 @@ require_once(__DIR__ . '/../entity/User.php');
 
 class UserAccessor {
 
+    #private $getByIDStatementString = "select * from ShinyPokemon where pkmnID = :pkmnID";
+    private $deleteStatementString = "delete from QuizAppUser where usename = :usename";
+    #private $insertStatementString = "insert INTO ShinyPokemon values (:pkmnID, :pkmnName, :pkmnGame, :pkmnMethod, :pkmnEncounters, :pkmnShinyCharm, :obtained)";
+    #private $updateStatementString = "update ShinyPokemon set pkmnName = :pkmnName, pkmnGame = :pkmnGame, pkmnMethod = :pkmnMethod, pkmnEncounters = :pkmnEncounters"
+    #                               . ", pkmnShinyCharm = :pkmnShinyCharm, obtained = :obtained where pkmnID = :pkmnID";
+    private $conn = NULL;
+    #private $getByIDStatement = NULL;
+    private $deleteStatement = NULL;
+    #private $insertStatement = NULL;
+    #private $updateStatement = NULL;
+
     public function getAllUsers()
     {
         $result = [];
@@ -86,27 +97,49 @@ class UserAccessor {
         return $result;
     }
 
+    # Add a User
     public function addNewUser($user) {
         $success;
 
-        $username = $user.getUsername();
-        $password = $user.getPassword();
-        $permissionLevel = $user.getPermissionLevel();
+        $username = $user->getUsername();
+        $password = $user->getPassword();
+        $permissionLevel = $user->getPermissionLevel();
 
         try {
             $conn = connect_db();
-            $stmt = $conn->prepare("insert into QuizAppUser values (username = :username, password = :password, permissionLevel = :permissionLevel)");
+            $stmt = $conn->prepare("insert into QuizAppUser VALUES (:username, :password, :permissionLevel)");
             $stmt->bindParam(":username", $username);
             $stmt->bindParam(":password", $password);
             $stmt->bindParam(":permissionLevel", $permissionLevel);
             $success= $stmt->execute();
         }
         catch (PDOException $e) {
-            $success = null;
+            $success = false;
         }
         finally {
-            if (!is_null($this->insertStatement)) {
+            if (!is_null($stmt)) {
                 $stmt->closeCursor();
+            }
+            return $success;
+        }
+    }
+    
+    # Delete a User
+    public function deleteUser($user) {
+        $success;
+
+        $username = $user->getUsername(); # Only username is needed
+
+        try {
+            $this->deleteStatement->bindParam(":username", $username);
+            $success = $this->deleteStatement->execute();
+        }
+        catch (PDOException $e) {
+            $success = false;
+        }
+        finally {
+            if (!is_null($this->deleteStatement)) {
+                $this->deleteStatement->closeCursor();
             }
             return $success;
         }

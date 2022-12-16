@@ -1,7 +1,9 @@
 <?php
     require_once './db/UserAccessor.php';
+    include "./utils/ChromePhp.php";
     $username = "";
     $password = "";
+    $passwordError = "";
     $permissionLevel = "USER";
     $confirmPassword = "";
     $usernameError = "";
@@ -26,11 +28,11 @@
             }
             else {
                 # Create new User
+                session_start();
                 $encryptedPassword = password_hash($password, PASSWORD_DEFAULT);
                 $user = new User($username, $encryptedPassword, $permissionLevel);
                 $newAccount = $accessor->addNewUser($user);
-                session_start();
-                $_SESSION["currentUser"] = json_encode($newAccount);
+                $_SESSION["currentUser"] = json_encode($user);
                 header("location: HomePage-Router.php");
             }
         }
@@ -79,11 +81,12 @@
                     <div class="mb-3">
                         <label for="passwordInput" class="form-label">Enter a Password</label>
                         <input id="passwordInput" type="password" class="form-control" name="password"  value="<?php echo $password; ?>" required>
+                        <span id="passwordError" class="text-danger floatingSelectGrid"><?php echo $passwordError; ?></span>
                     </div>
                     <div class="mb-3">
                         <label for="confirmPasswordInput" class="form-label">Confirm your Password</label>
                         <input id="confirmPasswordInput" type="password" class="form-control" name="confirmPassword"  value="<?php echo $confirmPassword ?>" required>
-                        <span id="confirmPasswordError" class="text-danger"><?php echo $confirmPasswordError; ?></span>
+                        <span id="confirmPasswordError" class="text-danger floatingSelectGrid"><?php echo $confirmPasswordError; ?></span>
                     </div>
                     <button id="signUpButton" class="btn btn-primary" type="submit">Sign Up!</button>
                 </form>

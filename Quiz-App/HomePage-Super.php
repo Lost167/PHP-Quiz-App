@@ -8,7 +8,7 @@ $permissionLevel = $userInfo["permissionLevel"];
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Home Page - User</title>
+        <title>Home Page - Super</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
         <script>
             window.onload = function () {
@@ -26,7 +26,9 @@ $permissionLevel = $userInfo["permissionLevel"];
                         html += "<table class='table table-hover table-striped'>";
                         html += "<tr class='table-dark'><th>Username</th><th>Permission Level</th><th>Change Password</th><th>Delete Account</th></tr>";
                         for (let i = 0; i < data.length; i++) {
-                            html += `<tr><td>${data[i].username}</td><td>${data[i].permissionLevel}</td><td><button id='changePassword' name='${data[i].username}'>Change Password</button></td><td><button id='deleteAccount' name='${data[i].username}'>Delete Account</button></td></tr>`;
+                            html += `<tr><td>${data[i].username}</td><td>${data[i].permissionLevel}</td>
+                                    <td><button id='changePassword' class='btn btn-outline-success' name='${data[i].username}'>Change Password</button></td>
+                                    <td><button id='deleteAccount' class='btn btn-outline-danger' name='${data[i].username}'>Delete Account</button></td></tr>`;
                         }
                         let elem = document.querySelector("#loadUsers");
                         elem.innerHTML += html;
@@ -34,6 +36,25 @@ $permissionLevel = $userInfo["permissionLevel"];
                 };
                 xhr.open("GET", url, true);
                 xhr.send();
+            }
+            
+            function deleteItem() {
+                let id = document.querySelector(".highlighted").querySelector("td").innerHTML;
+                let url = "quizapp/accounts/" + id; // entity, not action
+                let xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                        let resp = xmlhttp.responseText;
+                        if (resp.search("ERROR") >= 0 || resp != 1) {
+                            alert("could not complete request");
+                            console.log(resp);
+                        } else {
+                            getAllItems();
+                        }
+                    }
+                };
+                xmlhttp.open("DELETE", url, true); // "DELETE" is the action, "url" is the entity
+                xmlhttp.send();
             }
         </script>
     </head>
@@ -72,9 +93,6 @@ $permissionLevel = $userInfo["permissionLevel"];
                     $encryptedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
                     $user = new User($newUsername, $encryptedPassword, $newPermissionLevel);
                     $newAccount = $accessor->addNewUser($user);
-                    session_start();
-                    $_SESSION["currentUser"] = json_encode($newAccount);
-                    header("location: HomePage-Router.php");
                 }
             }
         }
@@ -134,7 +152,7 @@ $permissionLevel = $userInfo["permissionLevel"];
                     <button id="showAllAccounts" class="btn btn-primary" style="margin-top:1em;">Show All Accounts</button>
                 </div>
 
-                <div id="loadUsers" style="margin-top:1em;"></div>
+                <div id="loadUsers" class="container" style="margin-top:1em;"></div>
             </div>
         </div>
     </body>
